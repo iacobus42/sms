@@ -66,11 +66,11 @@ def csv2sqlite(data, database, create = False, drop = False):
         con.commit()
     if create:
         cur.execute("CREATE TABLE IF NOT EXISTS texts \
-        (`key` int primary key, name text, number int, type int, month int,\
+        (name text, number int, type int, month int,\
         day int, year int, hour int, minute int, second int)")
         con.commit()
-    baseCommand = "INSERT INTO texts (name, number, type, month, day, year,\
-    hour, minute, second) VALUES("
+    baseCommand = "INSERT INTO texts (name, number, type, month, day,\
+        year, hour, minute, second) VALUES("
     for line in data:
         command = (baseCommand+("%s, %s, %i, %i, %i, %i, %i, %i, %i)")%(
         "'" + line["name"] + "'", 
