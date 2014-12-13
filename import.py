@@ -6,7 +6,7 @@ startTime = time.time()
 basePath = sys.argv[1]
 incomplete = True
 i = 1
-print basePath
+print "Looking for files in " + basePath
 while incomplete:
   try:
     f = basePath + "sms" + str(i) + ".xml"
