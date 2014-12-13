@@ -1,59 +1,30 @@
 import xml.etree.ElementTree as etree 
 import sqlite3
 import csv
+import hashlib
 
-def xml2csv(xml, csv):
+def xml2csv(xml, csv, encrypt = False):
     fout = open(csv, "w")
     tree = etree.parse(xml) 
     root = tree.getroot()
-    fout.write("name,number,sent,month,day,year,hour,minute,second\n")
+    fout.write("name,number,sent,time\n")
     for child in root:
         try:
             contactName = child.attrib["contact_name"]
         except:
             contactName = "NULL"
         contactNumber = child.attrib["address"]
+        if encrypt:
+            contactName = hashlib.sha224(contactName).hexdigest()
+            contactNumber = hashlib.sha224(contactNumber).hexdigest()
         if child.attrib["type"] == "2":
             sent = 1
         else:
             sent = 0
-        month = child.attrib["readable_date"].split()[0]
-        if month == "Jan":
-            month = 1
-        elif month == "Feb":
-            month = 2
-        elif month == "Mar":
-            month = 3
-        elif month == "Apr":
-            month = 4
-        elif month == "May":
-            month = 5
-        elif month == "Jun":
-            month = 6
-        elif month == "Jul":
-            month = 7
-        elif month == "Aug":
-            month = 8
-        elif month == "Sep":
-            month = 9
-        elif month == "Oct":
-            month = 10
-        elif month == "Nov":
-            month = 11
-        elif month == "Dec":
-            month = 12
-        day = int(child.attrib["readable_date"].split()[1][0:-1])
-        year = int(child.attrib["readable_date"].split()[2])
-        if child.attrib["readable_date"].split()[4] == "PM":
-            hour = 12 + int(child.attrib["readable_date"].split()[3].split(":")[0])
-        else:
-            hour = int(child.attrib["readable_date"].split()[3].split(":")[0])
-        minute = int(child.attrib["readable_date"].split()[3].split(":")[1])
-        second = int(child.attrib["readable_date"].split()[3].split(":")[2])
+        time = round(float(child.attrib["date"])/1000)
         # name, address, type, month, date, year, h, m, s, c
-        fout.write(("%s,%s,%i,%i,%i,%i,%i,%i,%i\n")%(contactName, 
-                   contactNumber, sent, month, day, year, hour, 
-                   minute, second))
+        fout.write(("%s,%s,%i,%i\n")%(contactName, 
+                   contactNumber, sent, time))
     fout.close() 
 
 def csv2sqlite(data, database, create = False, drop = False):
@@ -66,17 +37,14 @@ def csv2sqlite(data, database, create = False, drop = False):
         con.commit()
     if create:
         cur.execute("CREATE TABLE IF NOT EXISTS texts \
-        (name text, number int, type int, month int,\
-        day int, year int, hour int, minute int, second int)")
+        (name text, number int, type int, time int)")
         con.commit()
-    baseCommand = "INSERT INTO texts (name, number, type, month, day,\
-        year, hour, minute, second) VALUES("
+    baseCommand = "INSERT INTO texts (name, number, type, time) VALUES("
     for line in data:
-        command = (baseCommand+("%s, %s, %i, %i, %i, %i, %i, %i, %i)")%(
+        command = (baseCommand+("%s, %s, %i, %i)")%(
         "'" + line["name"] + "'", 
         "'" + line["number"] + "'", int(line["sent"]), 
-        int(line["month"]), int(line["day"]), int(line["year"]), 
-        int(line["hour"]), int(line["minute"]), int(line["second"])))
+        int(line["time"])))
         cur.execute(command)
     con.commit()
-    
+    cur.execute("ANALYZE texts")

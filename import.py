@@ -1,16 +1,17 @@
-import sms
+import smsWNameFixes as sms
 import time
 import sys
 
 startTime = time.time()
 basePath = sys.argv[1]
+encrypt = sys.argv[2]
 incomplete = True
 i = 1
 print "Looking for files in " + basePath
 while incomplete:
   try:
     f = basePath + "sms" + str(i) + ".xml"
-    sms.xml2csv(f, f[0:-3] + "csv")
+    sms.xml2csv(f, f[0:-3] + "csv", encrypt)
     if i == 1:
       sms.csv2sqlite(f[0:-3] + "csv", basePath + "sms.db", True, True)
     else:
