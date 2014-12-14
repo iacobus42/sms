@@ -1,4 +1,4 @@
-import smsWNameFixes as sms
+import sms
 import time
 import sys
 
