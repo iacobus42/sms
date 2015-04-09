@@ -6,7 +6,7 @@ and writes metadata to CSV and a SQLite database (with one table called texts).
 
 Usage
 -----
-# Database Construction
+### Database Construction
 Either use the functions in `sms.py` for your own purposes or run the `import.py` script at the 
 command line. For `import.py`, run
 
@@ -33,7 +33,7 @@ To connect to the database after writing it out, from the command line run
 
 and you'll enter a SQLite session with the `sms.db` database. 
 
-# R and Shiny Dashboard
+### R and Shiny Dashboard
 In the file `app.R`, change the path to the database in line 7 (under the comment) from mine to 
 the path for your database. 
 
