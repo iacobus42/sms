@@ -30,7 +30,7 @@ sidebar <- dashboardSidebar(
     menuItem("When do we talk?", tabName = "timing",
              icon = icon("clock-o")),
     menuItem("Source code", icon = icon("github"), 
-             href = "https://github.com/rstudio/shinydashboard/",
+             href = "https://github.com/iacobus42/sms",
              newtab = TRUE))
 )
 
