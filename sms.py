@@ -11,14 +11,10 @@ def xml2csv(xml, csv, encrypt = False):
   for child in root:
     try:
       contactName = child.attrib["contact_name"]
-      if contactName == "Damicus":
-        contactName = "Eric Montgomery"
-      elif contactName == "Spacetime99 (OkCupid)":
-        contactName = "Madeline"
     except:
       contactName = "NULL"
     contactNumber = child.attrib["address"]
-    if encrypt == True:
+    if encrypt == "True":
       contactName = hashlib.sha224(contactName).hexdigest()
       contactNumber = hashlib.sha224(contactNumber).hexdigest()
     if child.attrib["type"] == "2":
