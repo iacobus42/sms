@@ -4,7 +4,11 @@ library(dplyr)
 library(ggplot2)
 library(survival)
 
+# change the path to db to match your path, all other code should not 
+# need to be changed
 db <- src_sqlite("/home/jacob/documents/blog/sms/data/sms.db")
+
+### NO CHANGES REQUIRED BELOW THIS LINE ###
 messages <- tbl(db, sql("SELECT name, type, time FROM texts"))
 contacts <- group_by(messages, name) %>% 
   summarize(n = n())
