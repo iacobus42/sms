@@ -1,8 +1,12 @@
 Parse XML text message output
 =============================
 
+Example dashboard now live at [here](http://jacobsimmering.com:3838/sms/).
+
 Parses the XML output from [Android SMS Backup and Restore](https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore&hl=en)
-and writes metadata to CSV and a SQLite database (with one table called texts). 
+and writes metadata to CSV and a SQLite database (with one table called texts). This 
+data can be used by a Shiny app to construct a dashboard of your text message based
+friendships.
 
 Usage
 -----
